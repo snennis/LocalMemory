@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Map Test</string>
+    <string name="my_location">My Location</string>
+    <string name="marker_info">%1$s\n%2$s</string>
+    <string-array name="activity_array">
+        <item>Sport</item>
+        <item>Einkaufen</item>
+        <item>Haushalt</item>
+        <item>Arbeit</item>
+    </string-array>
+    <string-array name="priority_array">
+        <item>Niedrig</item>
+        <item>Mittel</item>
+        <item>Hoch</item>
+    </string-array>
+</resources>
