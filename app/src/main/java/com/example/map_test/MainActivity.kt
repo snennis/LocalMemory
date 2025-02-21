@@ -52,8 +52,8 @@ class MainActivity : AppCompatActivity() {
 
     private val markersList = mutableListOf<Marker>()
 
-    private lateinit var locationHelper: LocationHelper
-    private lateinit var dialogHelper: DialogHelper
+    private lateinit var locationManagerHelper: LocationManagerHelper
+    private lateinit var markerDialogManager: MarkerDialogManager
     private lateinit var preferencesHelper: PreferencesHelper
     private lateinit var geofencingHelper: GeofencingHelper
 
@@ -76,8 +76,8 @@ class MainActivity : AppCompatActivity() {
 
         // Initialisiere die Helper-Klassen
         preferencesHelper = PreferencesHelper(this)
-        locationHelper = LocationHelper(this, locationListener)
-        dialogHelper = DialogHelper(this)
+        locationManagerHelper = LocationManagerHelper(this, locationListener)
+        markerDialogManager = MarkerDialogManager(this)
         geofencingHelper = GeofencingHelper(this)
 
         // Initialisiere und konfiguriere die MapView
@@ -102,10 +102,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Prüfe Standortberechtigungen
-        locationHelper.checkLocationPermission()
+        locationManagerHelper.checkLocationPermission()
 
         // Zentriere die Karte auf den aktuellen Standort
-        locationHelper.getCurrentLocation { location ->
+        locationManagerHelper.getCurrentLocation { location ->
             location?.let {
                 val geoPoint = GeoPoint(it.latitude, it.longitude)
                 mapView?.controller?.apply {
@@ -140,7 +140,7 @@ class MainActivity : AppCompatActivity() {
 
         // Button zum Hinzufügen eines neuen Markers
         findViewById<Button>(R.id.button_plus).setOnClickListener {
-            dialogHelper.showAttributeDialog { activity, desc, priority ->
+            markerDialogManager.showAttributeDialog { activity, desc, priority ->
                 selectedActivity = activity
                 description = desc
                 selectedPriority = priority
@@ -192,7 +192,7 @@ class MainActivity : AppCompatActivity() {
 
         // Marker-Click-Listener: Zeige Info-Dialog, starte Routing und entferne ggf. existierende Routen-Linie
         marker.setOnMarkerClickListener { _, _ ->
-            dialogHelper.showMarkerInfoDialog(marker) {
+            markerDialogManager.showMarkerInfoDialog(marker) {
                 // Marker entfernen
                 mapView?.overlays?.remove(marker)
                 markersList.remove(marker)
@@ -206,7 +206,7 @@ class MainActivity : AppCompatActivity() {
                     mapView?.invalidate()
                 }
             }
-            locationHelper.getCurrentLocation { currentLocation ->
+            locationManagerHelper.getCurrentLocation { currentLocation ->
                 currentLocation?.let {
                     val currentGeoPoint = GeoPoint(it.latitude, it.longitude)
                     // Entferne bestehendes Routing-Overlay
@@ -254,7 +254,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        locationHelper.onRequestPermissionsResult(requestCode, grantResults)
+        locationManagerHelper.onRequestPermissionsResult(requestCode, grantResults)
     }
 
     override fun onResume() {
@@ -265,7 +265,7 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         mapView?.onPause()
-        locationHelper.removeLocationUpdates()
+        locationManagerHelper.removeLocationUpdates()
     }
 
     private val locationListener = object : LocationListener {

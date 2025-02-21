@@ -9,7 +9,7 @@ import android.location.LocationManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 
-class LocationHelper(
+class LocationManagerHelper(
     private val context: Context,
     private val locationListener: LocationListener
 ) {

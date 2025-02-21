@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import org.osmdroid.views.overlay.Marker
 
-class DialogHelper(private val context: Context) {
+class MarkerDialogManager(private val context: Context) {
 
     // Zeigt einen Dialog zum Erstellen eines neuen Markers an
     fun showAttributeDialog(onSave: (String, String, String) -> Unit) {
