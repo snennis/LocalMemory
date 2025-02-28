@@ -14,7 +14,7 @@ import org.osmdroid.views.overlay.Polyline
 import java.io.IOException
 
 object RoutingHelper {
-    private const val ORS_API_KEY = "5b3ce3597851110001cf624805103b917d6c45229160cba06be372d8"
+    private const val ORS_API_KEY = "your_api_key"
     private const val ORS_URL = "https://api.openrouteservice.org/v2/directions/driving-car/geojson"
 
     fun fetchAndDisplayRoute(
